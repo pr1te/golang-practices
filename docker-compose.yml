@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15.3-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=announcify
+      - POSTGRES_USER=announcify
+      - POSTGRES_PASSWORD=P@ssw0rd
+    ports:
+      - 5432:5432
+    

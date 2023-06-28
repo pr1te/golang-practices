@@ -1,0 +1,16 @@
+http:
+  port: ${PORT:8080}
+
+logger: 
+  path: ${LOG_PATH:./logs}
+
+  # 'debug', 'info', 'warn', 'error', 'dpanic', 'panic', and 'fatal'
+  level: ${LOG_LEVEL:info}
+
+database:
+  name: ${DATABASE_NAME:announcify}
+  host: ${DATABASE_HOST:localhost}
+  port: ${DATABASE_PORT:5432}
+  username: ${DATABASE_USERNAME:announcify}
+  password: ${DATABASE_PASSWORD}
+  ssl: ${DATABASE_SSL:false}

@@ -19,3 +19,14 @@
 
 # Go workspace file
 go.work
+
+# bundle dir
+/bin/
+/tmp/
+
+# env file
+.env*
+!.env.example
+
+# logs
+/logs/
