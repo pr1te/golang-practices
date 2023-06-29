@@ -11,7 +11,9 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func New(logPath string, logLevel string) (*zap.SugaredLogger, func(), error) {
+type Logger = zap.SugaredLogger
+
+func New(logPath string, logLevel string) (*Logger, func(), error) {
 	if err := os.MkdirAll(logPath, 0755); err != nil {
 		return nil, nil, err
 	}

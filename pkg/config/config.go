@@ -34,7 +34,7 @@ type DatabaseConfiguration struct {
 	Ssl      string
 }
 
-func Load() (config *Configuration, err error) {
+func Load() (*Configuration, error) {
 	// load environment variables from .env file
 	if err := godotenv.Load(); err != nil {
 		return nil, err
@@ -58,6 +58,8 @@ func Load() (config *Configuration, err error) {
 	if err := v.ReadInConfig(); err != nil {
 		return nil, err
 	}
+
+	config := &Configuration{}
 
 	// Viper unmarshals the loaded env varialbes into the struct
 	if err := v.Unmarshal(&config); err != nil {
@@ -105,5 +107,5 @@ func Load() (config *Configuration, err error) {
 		return nil, err
 	}
 
-	return
+	return config, nil
 }

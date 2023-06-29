@@ -7,11 +7,16 @@ import (
 	"os/signal"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/pr1te/announcify-api/pkg/common/config"
-	"github.com/pr1te/announcify-api/pkg/common/database"
-	"github.com/pr1te/announcify-api/pkg/common/logger"
-	"github.com/pr1te/announcify-api/pkg/router"
+	"github.com/pr1te/announcify-api/pkg/config"
+	"github.com/pr1te/announcify-api/pkg/controllers"
+	"github.com/pr1te/announcify-api/pkg/database"
+	"github.com/pr1te/announcify-api/pkg/logger"
+	"github.com/pr1te/announcify-api/pkg/middlewares"
+	"github.com/pr1te/announcify-api/pkg/repositories"
+	"github.com/pr1te/announcify-api/pkg/routes"
+	"github.com/pr1te/announcify-api/pkg/services"
 	"go.uber.org/dig"
+	"go.uber.org/zap"
 )
 
 var Version = "unset"
@@ -21,7 +26,7 @@ func main() {
 	container := dig.New()
 
 	// load config
-	config, loadConfigError := config.Load()
+	conf, loadConfigError := config.Load()
 
 	if loadConfigError != nil {
 		log.Panicln(loadConfigError)
@@ -31,7 +36,7 @@ func main() {
 	app := fiber.New()
 
 	// create logger
-	logger, closeLogger, createLoggerError := logger.New(config.Logger.Path, config.Logger.Level)
+	logger, closeLogger, createLoggerError := logger.New(conf.Logger.Path, conf.Logger.Level)
 
 	if createLoggerError != nil {
 		log.Panicln(createLoggerError)
@@ -44,42 +49,60 @@ func main() {
 	signal.Notify(c, os.Interrupt)
 
 	go func() {
-		_ = <-c
+		<-c
 
 		logger.Debugln("gracefully shutting down")
 
-		_ = app.Shutdown()
+		app.Shutdown()
 	}()
 
 	// establish database connection
 	db := database.New(&database.ConnectionOptions{
-		Name:     config.Database.Name,
-		Host:     config.Database.Host,
-		Port:     config.Database.Port,
-		Username: config.Database.Username,
-		Password: config.Database.Password,
-		Ssl:      config.Database.Ssl,
+		Name:     conf.Database.Name,
+		Host:     conf.Database.Host,
+		Port:     conf.Database.Port,
+		Username: conf.Database.Username,
+		Password: conf.Database.Password,
+		Ssl:      conf.Database.Ssl,
 	}, logger)
 
 	if err := db.Connect(); err != nil {
 		logger.Panicln(err)
 	}
 
-	logger.Infof("establish connection database connection to '%s:%s'", config.Database.Host, config.Database.Port)
+	logger.Infof("establish connection database connection to '%s:%s'", conf.Database.Host, conf.Database.Port)
 
 	// register the dependencies to ioc
-	container.Provide(db)
-	container.Provide(config)
-	container.Provide(logger)
+	container.Provide(func() *config.Configuration { return conf })
+	container.Provide(func() *zap.SugaredLogger { return logger })
+	container.Provide(func() *database.Database { return db })
+
+	providers := []interface{}{
+		// repositories
+		repositories.NewWorkspace,
+
+		// services
+		services.NewWorkspace,
+
+		// controllers
+		controllers.NewWorkspace,
+	}
+
+	for _, provider := range providers {
+		container.Provide(provider)
+	}
+
+	// apply middlewares
+	app.Use(middlewares.NewHttpLogger(middlewares.HttpLogConfig{Logger: logger}))
 
 	// register routes
-	router.Init(app)
+	routes.InitRouter(app, container)
 
-	port := fmt.Sprintf(":%s", config.Http.Port)
+	port := fmt.Sprintf(":%s", conf.Http.Port)
 
 	logger.Infof("app version - %s", Version)
 	logger.Infof("listening on port - %s", port)
-	logger.Debugf("environment variables - %+v", config)
+	logger.Debugf("environment variables - %+v", conf)
 
 	if err := app.Listen(port); err != nil {
 		logger.Panicln(err)

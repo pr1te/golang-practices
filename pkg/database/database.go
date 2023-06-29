@@ -17,13 +17,13 @@ type ConnectionOptions struct {
 	Ssl      string
 }
 
-type database struct {
+type Database struct {
 	connectionOptions *ConnectionOptions
 	logger            *zap.SugaredLogger
-	client            *gorm.DB
+	Client            *gorm.DB
 }
 
-func (db *database) Connect() error {
+func (db *Database) Connect() error {
 	host := db.connectionOptions.Host
 	port := db.connectionOptions.Port
 	name := db.connectionOptions.Name
@@ -38,13 +38,13 @@ func (db *database) Connect() error {
 		return err
 	}
 
-	db.client = client
+	db.Client = client
 
 	return nil
 }
 
-func (db *database) Disconnect() error {
-	native, err := db.client.DB()
+func (db *Database) Disconnect() error {
+	native, err := db.Client.DB()
 
 	if err != nil {
 		return err
@@ -55,8 +55,8 @@ func (db *database) Disconnect() error {
 	return nil
 }
 
-func New(options *ConnectionOptions, logger *zap.SugaredLogger) *database {
-	return &database{
+func New(options *ConnectionOptions, logger *zap.SugaredLogger) *Database {
+	return &Database{
 		logger:            logger,
 		connectionOptions: options,
 	}
