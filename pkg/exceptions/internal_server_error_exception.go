@@ -1,6 +1,8 @@
 package exceptions
 
-func NewInternalServerErrorException(message string, errors ...[]interface{}) *Exception {
+import "github.com/go-errors/errors"
+
+func NewInternalServerErrorException(message string, errors ...[]interface{}) *errors.Error {
 	var err []interface{}
 
 	if len(errors) > 0 {

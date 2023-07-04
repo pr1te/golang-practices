@@ -1,6 +1,8 @@
 package exceptions
 
-func NewNotFoundException(message string, errors ...[]interface{}) *Exception {
+import "github.com/go-errors/errors"
+
+func NewNotFoundException(message string, errors ...[]interface{}) *errors.Error {
 	var err []interface{}
 
 	if len(errors) > 0 {

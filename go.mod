@@ -6,6 +6,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.47.0
 	github.com/joho/godotenv v1.5.1
 	github.com/spf13/viper v1.16.0
+	github.com/valyala/bytebufferpool v1.0.0
 	go.uber.org/dig v1.17.0
 	go.uber.org/zap v1.24.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -17,6 +18,7 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/frankban/quicktest v1.14.5 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/go-errors/errors v1.4.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
@@ -42,7 +44,6 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
-	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.48.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect

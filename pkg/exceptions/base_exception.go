@@ -1,5 +1,7 @@
 package exceptions
 
+import "github.com/go-errors/errors"
+
 type Exception struct {
 	Code    int           `json:"code" default:"500000"`
 	Type    string        `json:"type"`
@@ -11,7 +13,7 @@ func (err *Exception) Error() string {
 	return err.Message
 }
 
-func New(message string, code int, errorType string, errors []interface{}) *Exception {
+func New(message string, code int, errorType string, errs []interface{}) *errors.Error {
 	msg := Messages[code]
 
 	if len(msg) > 0 {
@@ -20,8 +22,8 @@ func New(message string, code int, errorType string, errors []interface{}) *Exce
 
 	err := []any{}
 
-	if len(errors) > 0 {
-		err = errors
+	if len(errs) > 0 {
+		err = errs
 	}
 
 	excep := &Exception{
@@ -31,5 +33,5 @@ func New(message string, code int, errorType string, errors []interface{}) *Exce
 		Errors:  err,
 	}
 
-	return excep
+	return errors.New(excep)
 }

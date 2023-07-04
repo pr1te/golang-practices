@@ -33,11 +33,6 @@ func main() {
 		log.Panicln(loadConfigError)
 	}
 
-	// create go fiber app
-	app := fiber.New(fiber.Config{
-		ErrorHandler: errorHandler,
-	})
-
 	// create logger
 	logger, closeLogger, createLoggerError := logger.New(conf.Logger.Path, conf.Logger.Level)
 
@@ -46,6 +41,11 @@ func main() {
 	}
 
 	logger.Debugf("----- DEBUG MODE ENABLED -----")
+
+	// create go fiber app
+	app := fiber.New(fiber.Config{
+		ErrorHandler: errorHandler(logger),
+	})
 
 	// graceful shutdown
 	c := make(chan os.Signal, 1)
