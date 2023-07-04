@@ -21,6 +21,7 @@ import (
 )
 
 var Version = "unset"
+var AppName = "Announcify API"
 
 func main() {
 	// create ioc
@@ -44,6 +45,7 @@ func main() {
 
 	// create go fiber app
 	app := fiber.New(fiber.Config{
+		AppName:      AppName,
 		ErrorHandler: errorHandler(logger),
 	})
 
