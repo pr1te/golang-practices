@@ -32,7 +32,9 @@ func (db *Database) Connect() error {
 	ssl := db.connectionOptions.Ssl
 
 	dsn := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", host, port, name, username, password, ssl)
-	client, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	client, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		SkipDefaultTransaction: true,
+	})
 
 	if err != nil {
 		return err

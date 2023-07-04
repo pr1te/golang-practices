@@ -10,6 +10,7 @@ import (
 	"github.com/pr1te/announcify-api/pkg/config"
 	"github.com/pr1te/announcify-api/pkg/controllers"
 	"github.com/pr1te/announcify-api/pkg/database"
+	"github.com/pr1te/announcify-api/pkg/exceptions"
 	"github.com/pr1te/announcify-api/pkg/logger"
 	"github.com/pr1te/announcify-api/pkg/middlewares"
 	"github.com/pr1te/announcify-api/pkg/repositories"
@@ -33,7 +34,9 @@ func main() {
 	}
 
 	// create go fiber app
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		ErrorHandler: errorHandler,
+	})
 
 	// create logger
 	logger, closeLogger, createLoggerError := logger.New(conf.Logger.Path, conf.Logger.Level)
@@ -79,12 +82,16 @@ func main() {
 
 	providers := []interface{}{
 		// repositories
+		repositories.NewHelper,
 		repositories.NewWorkspace,
+		repositories.NewLocalUser,
 
 		// services
+		services.NewLocalAuth,
 		services.NewWorkspace,
 
 		// controllers
+		controllers.NewLocalAuth,
 		controllers.NewWorkspace,
 	}
 
@@ -97,6 +104,10 @@ func main() {
 
 	// register routes
 	routes.InitRouter(app, container)
+
+	app.Use(func(c *fiber.Ctx) error {
+		return exceptions.NewNotFoundException("not found resource")
+	})
 
 	port := fmt.Sprintf(":%s", conf.Http.Port)
 

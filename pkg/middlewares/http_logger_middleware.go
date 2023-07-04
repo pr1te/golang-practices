@@ -24,10 +24,15 @@ func NewHttpLogger(config HttpLogConfig) fiber.Handler {
 		start := time.Now()
 
 		// handle request
-		c.Next()
+		chainErr := c.Next()
+
+		if chainErr != nil {
+			if err := c.App().ErrorHandler(c, chainErr); err != nil {
+				c.SendStatus(fiber.StatusInternalServerError)
+			}
+		}
 
 		stop := time.Now()
-
 		buf := bytebufferpool.Get()
 
 		_, _ = buf.WriteString(
@@ -47,9 +52,7 @@ func NewHttpLogger(config HttpLogConfig) fiber.Handler {
 			),
 		)
 
-		// print log
 		config.Logger.Infoln(buf)
-
 		bytebufferpool.Put(buf)
 
 		return nil
