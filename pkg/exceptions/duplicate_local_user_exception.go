@@ -1,6 +1,8 @@
 package exceptions
 
-import "github.com/go-errors/errors"
+import (
+	"github.com/go-errors/errors"
+)
 
 func NewDuplicateLocalUserException(message string, errors ...[]interface{}) *errors.Error {
 	var err []interface{}

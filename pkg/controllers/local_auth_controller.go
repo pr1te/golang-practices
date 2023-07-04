@@ -13,17 +13,19 @@ type CreateAccountBodyDTO struct {
 	Email string `json:"email"`
 }
 
-func (controller *LocalAuthController) CreateAccount(c *fiber.Ctx) {
+func (controller *LocalAuthController) CreateAccount(c *fiber.Ctx) error {
 	body := new(CreateAccountBodyDTO)
 	c.BodyParser(&body)
 
 	result, err := controller.localAuthService.CreateAccount(body.Email)
 
 	if err != nil {
-		c.JSON(err)
-	} else {
-		c.JSON(result)
+		return err
 	}
+
+	c.JSON(result)
+
+	return nil
 }
 
 func NewLocalAuth(localAuthService *services.LocalAuthService) *LocalAuthController {

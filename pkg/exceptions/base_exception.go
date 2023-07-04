@@ -1,6 +1,8 @@
 package exceptions
 
-import "github.com/go-errors/errors"
+import (
+	"github.com/go-errors/errors"
+)
 
 type Exception struct {
 	Code    int           `json:"code" default:"500000"`
@@ -15,7 +17,7 @@ func (err *Exception) Error() string {
 func New(message string, code int, errs []interface{}) *errors.Error {
 	msg := Messages[code]
 
-	if len(msg) > 0 {
+	if len(message) > 0 {
 		msg = message
 	}
 

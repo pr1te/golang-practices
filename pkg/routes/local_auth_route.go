@@ -8,8 +8,12 @@ import (
 
 func InitLocalAuthRoute(router fiber.Router, container *dig.Container) {
 	router.Post("/local", func(c *fiber.Ctx) error {
-		err := container.Invoke(func(controller *controllers.LocalAuthController) {
-			controller.CreateAccount(c)
+		err := container.Invoke(func(controller *controllers.LocalAuthController) error {
+			if err := controller.CreateAccount(c); err != nil {
+				return err
+			}
+
+			return nil
 		})
 
 		return err
