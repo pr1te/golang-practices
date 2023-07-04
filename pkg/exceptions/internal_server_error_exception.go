@@ -9,7 +9,7 @@ func NewInternalServerErrorException(message string, errors ...[]interface{}) *e
 		err = errors[0]
 	}
 
-	excep := New(message, INTERNAL_SERVER_ERROR, "InternalServerError", err)
+	excep := New(message, INTERNAL_SERVER_ERROR, err)
 
 	return excep
 }

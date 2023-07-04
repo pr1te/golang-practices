@@ -9,7 +9,7 @@ func NewNotFoundException(message string, errors ...[]interface{}) *errors.Error
 		err = errors[0]
 	}
 
-	excep := New(message, NOT_FOUND, "NotFound", err)
+	excep := New(message, NOT_FOUND, err)
 
 	return excep
 }

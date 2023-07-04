@@ -9,7 +9,7 @@ func NewBadRequestException(message string, errors ...[]interface{}) *errors.Err
 		err = errors[0]
 	}
 
-	excep := New(message, BAD_REQUEST, "BadRequest", err)
+	excep := New(message, BAD_REQUEST, err)
 
 	return excep
 }
