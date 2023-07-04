@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/pr1te/announcify-api/pkg/exceptions"
+	"github.com/pr1te/announcify-api/pkg/libs/validator"
 	"github.com/pr1te/announcify-api/pkg/services"
 )
 
@@ -10,12 +12,21 @@ type LocalAuthController struct {
 }
 
 type CreateAccountBodyDTO struct {
-	Email string `json:"email"`
+	Email string `json:"email" validate:"required,email"`
 }
 
-func (controller *LocalAuthController) CreateAccount(c *fiber.Ctx) error {
+func (controller *LocalAuthController) CreateAccount(c *fiber.Ctx, validator *validator.Validator) error {
 	body := new(CreateAccountBodyDTO)
 	c.BodyParser(&body)
+
+	if err := validator.ValidateStruct(body); err != nil {
+		details := make([]interface{}, len(err))
+		for index, value := range err {
+			details[index] = value
+		}
+
+		return exceptions.NewValidationErrorException("validation error", details)
+	}
 
 	result, err := controller.localAuthService.CreateAccount(body.Email)
 

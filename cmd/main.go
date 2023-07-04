@@ -11,6 +11,7 @@ import (
 	"github.com/pr1te/announcify-api/pkg/controllers"
 	"github.com/pr1te/announcify-api/pkg/database"
 	"github.com/pr1te/announcify-api/pkg/exceptions"
+	"github.com/pr1te/announcify-api/pkg/libs/validator"
 	"github.com/pr1te/announcify-api/pkg/logger"
 	"github.com/pr1te/announcify-api/pkg/middlewares"
 	"github.com/pr1te/announcify-api/pkg/repositories"
@@ -77,10 +78,13 @@ func main() {
 
 	logger.Infof("establish connection database connection to '%s:%s'", conf.Database.Host, conf.Database.Port)
 
+	validate := validator.New()
+
 	// register the dependencies to ioc
 	container.Provide(func() *config.Configuration { return conf })
 	container.Provide(func() *zap.SugaredLogger { return logger })
 	container.Provide(func() *database.Database { return db })
+	container.Provide(func() *validator.Validator { return validate })
 
 	providers := []interface{}{
 		// repositories
