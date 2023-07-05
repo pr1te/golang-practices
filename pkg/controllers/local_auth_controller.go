@@ -12,12 +12,13 @@ type LocalAuthController struct {
 }
 
 type CreateAccountBodyDTO struct {
-	Email string `json:"email" validate:"required,email"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,password"`
 }
 
 func (controller *LocalAuthController) CreateAccount(c *fiber.Ctx, validator *validator.Validator) error {
-	body := new(CreateAccountBodyDTO)
-	c.BodyParser(&body)
+	body := &CreateAccountBodyDTO{}
+	c.BodyParser(body)
 
 	if err := validator.ValidateStruct(body); err != nil {
 		details := make([]interface{}, len(err))
