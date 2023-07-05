@@ -1,6 +1,6 @@
-package exceptions
+package errors
 
-var EXCEPTION_TYPE = map[int]string{
+var ERROR_TYPE = map[int]string{
 	// 4xx
 	400: "BadRequest",
 	401: "Unauthorized",

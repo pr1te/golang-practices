@@ -1,7 +1,7 @@
-package exceptions
+package errors
 
 import (
-	"github.com/go-errors/errors"
+	goerrors "github.com/go-errors/errors"
 )
 
 type Exception struct {
@@ -14,7 +14,7 @@ func (err *Exception) Error() string {
 	return err.Message
 }
 
-func New(message string, code int, errs []interface{}) *errors.Error {
+func New(message string, code int, errs []interface{}) *goerrors.Error {
 	msg := Messages[code]
 
 	if len(message) > 0 {
@@ -33,5 +33,5 @@ func New(message string, code int, errs []interface{}) *errors.Error {
 		Errors:  err,
 	}
 
-	return errors.New(excep)
+	return goerrors.New(excep)
 }

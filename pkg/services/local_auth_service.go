@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/pr1te/announcify-api/pkg/exceptions"
+	"github.com/pr1te/announcify-api/pkg/errors"
 	"github.com/pr1te/announcify-api/pkg/models"
 	"github.com/pr1te/announcify-api/pkg/repositories"
 	"gorm.io/gorm"
@@ -21,7 +21,7 @@ func (service *LocalAuthService) CreateAccount(email string) (*models.LocalUser,
 		})
 
 		if user != nil {
-			return exceptions.NewDuplicateLocalUserException("the email has already existed", []interface{}{
+			return errors.NewLocalUserDuplicated("the email has already existed", []interface{}{
 				map[string]string{"email": email},
 			})
 		}

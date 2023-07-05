@@ -10,7 +10,7 @@ import (
 	"github.com/pr1te/announcify-api/pkg/config"
 	"github.com/pr1te/announcify-api/pkg/controllers"
 	"github.com/pr1te/announcify-api/pkg/database"
-	"github.com/pr1te/announcify-api/pkg/exceptions"
+	"github.com/pr1te/announcify-api/pkg/errors"
 	"github.com/pr1te/announcify-api/pkg/libs/validator"
 	"github.com/pr1te/announcify-api/pkg/logger"
 	"github.com/pr1te/announcify-api/pkg/middlewares"
@@ -112,7 +112,7 @@ func main() {
 	routes.InitRouter(app, container)
 
 	app.Use(func(c *fiber.Ctx) error {
-		return exceptions.NewNotFoundException("not found resource")
+		return errors.NewNotFound("not found resource")
 	})
 
 	port := fmt.Sprintf(":%s", conf.Http.Port)

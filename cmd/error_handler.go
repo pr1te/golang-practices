@@ -3,9 +3,9 @@ package main
 import (
 	"strconv"
 
-	"github.com/go-errors/errors"
+	goerrors "github.com/go-errors/errors"
 	"github.com/gofiber/fiber/v2"
-	"github.com/pr1te/announcify-api/pkg/exceptions"
+	"github.com/pr1te/announcify-api/pkg/errors"
 	"github.com/pr1te/announcify-api/pkg/logger"
 )
 
@@ -21,18 +21,18 @@ func errorHandler(logger *logger.Logger) fiber.ErrorHandler {
 	return func(ctx *fiber.Ctx, err error) error {
 		status := fiber.StatusInternalServerError
 
-		var e *errors.Error
-		if errors.As(err, &e) {
-			prefix := strconv.Itoa(e.Err.(*exceptions.Exception).Code)[0:3]
+		var e *goerrors.Error
+		if goerrors.As(err, &e) {
+			prefix := strconv.Itoa(e.Err.(*errors.Exception).Code)[0:3]
 			status, _ = strconv.Atoi(prefix)
 
-			exception := e.Err.(*exceptions.Exception)
+			exception := e.Err.(*errors.Exception)
 			ctx.Status(status).JSON(&CustomError{
 				Code:    exception.Code,
 				Message: exception.Message,
 				Errors:  exception.Errors,
 				Status:  status,
-				Type:    exceptions.EXCEPTION_TYPE[status],
+				Type:    errors.ERROR_TYPE[status],
 			})
 
 			logger.Errorln(e.ErrorStack())
@@ -43,7 +43,7 @@ func errorHandler(logger *logger.Logger) fiber.ErrorHandler {
 		err = ctx.Status(status).JSON(err)
 
 		if err != nil {
-			internalErr := exceptions.NewInternalServerErrorException("oops! something went wrong")
+			internalErr := errors.NewInternalServerError("oops! something went wrong")
 
 			return ctx.Status(status).JSON(internalErr.Err)
 		}

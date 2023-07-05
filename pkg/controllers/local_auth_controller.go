@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/pr1te/announcify-api/pkg/exceptions"
+	"github.com/pr1te/announcify-api/pkg/errors"
 	"github.com/pr1te/announcify-api/pkg/libs/validator"
 	"github.com/pr1te/announcify-api/pkg/services"
 )
@@ -26,7 +26,7 @@ func (controller *LocalAuthController) CreateAccount(c *fiber.Ctx, validator *va
 			details[index] = value
 		}
 
-		return exceptions.NewValidationErrorException("validation error", details)
+		return errors.NewLocalUserDuplicated("validation error", details)
 	}
 
 	result, err := controller.localAuthService.CreateAccount(body.Email)
