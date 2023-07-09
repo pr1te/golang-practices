@@ -10,9 +10,12 @@ import (
 )
 
 type LocalAuthService struct {
-	logger        *logger.Logger
-	helperRepo    *repositories.HelperRepository
-	localUserRepo *repositories.LocalUserRepository
+	logger *logger.Logger
+
+	// repositories
+	helperRepo      *repositories.HelperRepository
+	localUserRepo   *repositories.LocalUserRepository
+	userProfileRepo *repositories.UserProfileRepository
 }
 
 func hashPassword(password string) (string, error) {
@@ -74,11 +77,19 @@ func (service *LocalAuthService) Login(email string, password string) (*models.L
 	return nil, nil
 }
 
-func NewLocalAuth(logger *logger.Logger, localUserRepo *repositories.LocalUserRepository, helperRepo *repositories.HelperRepository) *LocalAuthService {
+func NewLocalAuth(
+	logger *logger.Logger,
+
+	// repositories
+	helperRepo *repositories.HelperRepository,
+	localUserRepo *repositories.LocalUserRepository,
+	userProfileRepo *repositories.UserProfileRepository,
+) *LocalAuthService {
 	return &LocalAuthService{
 		logger,
 
 		helperRepo,
 		localUserRepo,
+		userProfileRepo,
 	}
 }
