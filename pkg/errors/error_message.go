@@ -10,6 +10,9 @@ var Messages = []string{
 	400000: utils.StatusMessage(400),
 	400001: "local user has already existed",
 
+	// 401xxx
+	401000: utils.StatusMessage(401),
+
 	// 404xxx
 	404000: utils.StatusMessage(404),
 }
