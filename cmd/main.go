@@ -91,6 +91,7 @@ func main() {
 		repositories.NewHelper,
 		repositories.NewWorkspace,
 		repositories.NewLocalUser,
+		repositories.NewUserProfile,
 
 		// services
 		services.NewLocalAuth,
