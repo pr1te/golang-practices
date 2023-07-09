@@ -19,4 +19,16 @@ func InitLocalAuthRoute(router fiber.Router, container *dig.Container) {
 
 		return err
 	})
+
+	router.Post("/local/login", func(c *fiber.Ctx) error {
+		err := container.Invoke(func(controller *controllers.LocalAuthController, validator *validator.Validator) error {
+			if err := controller.Login(c, validator); err != nil {
+				return err
+			}
+
+			return nil
+		})
+
+		return err
+	})
 }

@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"errors"
+
 	"github.com/pr1te/announcify-api/pkg/database"
 	"github.com/pr1te/announcify-api/pkg/models"
 	"gorm.io/gorm"
@@ -36,14 +38,20 @@ func (repo *LocalUserRepository) GetByEmail(email string, options ...GetOptions)
 	}
 
 	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+
 		return nil, result.Error
 	}
 
 	return user, nil
 }
 
-func (repo *LocalUserRepository) Create() string {
-	return "created"
+func (repo *LocalUserRepository) Create(u models.LocalUser) models.LocalUser {
+	repo.db.Client.Create(&u)
+
+	return u
 }
 
 func NewLocalUser(db *database.Database) *LocalUserRepository {

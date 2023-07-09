@@ -2,25 +2,42 @@ package services
 
 import (
 	"github.com/pr1te/announcify-api/pkg/errors"
+	"github.com/pr1te/announcify-api/pkg/logger"
 	"github.com/pr1te/announcify-api/pkg/models"
 	"github.com/pr1te/announcify-api/pkg/repositories"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type LocalAuthService struct {
+	logger        *logger.Logger
 	helperRepo    *repositories.HelperRepository
 	localUserRepo *repositories.LocalUserRepository
 }
 
-func (service *LocalAuthService) CreateAccount(email string) (*models.LocalUser, error) {
+func hashPassword(password string) (string, error) {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+
+	return string(hash), err
+}
+
+func comparePassword(hashedPassword, comparedPassword string) bool {
+	if err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(comparedPassword)); err != nil {
+		return false
+	}
+
+	return true
+}
+
+func (service *LocalAuthService) CreateAccount(email string, password string) (*models.LocalUser, error) {
 	var result *models.LocalUser
 
 	if err := service.helperRepo.RunInTransaction(func(tx *gorm.DB) error {
-		user, err := service.localUserRepo.GetByEmail(email, repositories.GetOptions{
+		existingUser, err := service.localUserRepo.GetByEmail(email, repositories.GetOptions{
 			Tx: tx,
 		})
 
-		if user != nil {
+		if existingUser != nil {
 			return errors.NewLocalUserDuplicated("the email has already existed", []interface{}{
 				map[string]string{"email": email},
 			})
@@ -30,7 +47,10 @@ func (service *LocalAuthService) CreateAccount(email string) (*models.LocalUser,
 			return err
 		}
 
-		result = user
+		hashPassword, _ := hashPassword(password)
+		user := service.localUserRepo.Create(models.LocalUser{Email: email, Password: hashPassword})
+
+		result = &user
 
 		return nil
 	}); err != nil {
@@ -40,8 +60,24 @@ func (service *LocalAuthService) CreateAccount(email string) (*models.LocalUser,
 	return result, nil
 }
 
-func NewLocalAuth(localUserRepo *repositories.LocalUserRepository, helperRepo *repositories.HelperRepository) *LocalAuthService {
+func (service *LocalAuthService) Login(email string, password string) (*models.LocalUser, error) {
+	user, err := service.localUserRepo.GetByEmail(email)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if verifiedPasswordResult := comparePassword(user.Password, password); verifiedPasswordResult {
+		return user, nil
+	}
+
+	return nil, nil
+}
+
+func NewLocalAuth(logger *logger.Logger, localUserRepo *repositories.LocalUserRepository, helperRepo *repositories.HelperRepository) *LocalAuthService {
 	return &LocalAuthService{
+		logger,
+
 		helperRepo,
 		localUserRepo,
 	}
