@@ -35,7 +35,13 @@ func errorHandler(logger *logger.Logger) fiber.ErrorHandler {
 				Type:    errors.ERROR_TYPE[status],
 			})
 
-			logger.Errorln(e.ErrorStack())
+			statusCategory := strconv.Itoa(e.Err.(*errors.Exception).Code)[0:1]
+
+			if statusCategory == "4" {
+				logger.Debugf("%s, code: %d\n%+v", exception.Message, exception.Code, exception.Errors)
+			} else {
+				logger.Errorln(e.ErrorStack())
+			}
 
 			return nil
 		}
