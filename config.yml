@@ -8,9 +8,11 @@ logger:
   level: ${LOG_LEVEL:info}
 
 database:
-  name: ${DATABASE_NAME:announcify}
+  name: ${DATABASE_NAME:left-it}
   host: ${DATABASE_HOST:localhost}
   port: ${DATABASE_PORT:5432}
-  username: ${DATABASE_USERNAME:announcify}
+  username: ${DATABASE_USERNAME:left-it}
   password: ${DATABASE_PASSWORD}
-  ssl: ${DATABASE_SSL:false}
+
+  # 'disable' and 'enable'
+  ssl: ${DATABASE_SSL:disable}
