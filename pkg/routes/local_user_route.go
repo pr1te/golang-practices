@@ -8,7 +8,7 @@ import (
 	"go.uber.org/dig"
 )
 
-func InitLocalUserRoute(router fiber.Router, container *dig.Container) {
+func InitLocalUserRouteAuth(router fiber.Router, container *dig.Container) {
 	router.Post("/local", func(c *fiber.Ctx) error {
 		err := container.Invoke(func(controller *controllers.LocalUserController, validator *validator.Validator) error {
 			if err := controller.CreateAccount(c, validator); err != nil {

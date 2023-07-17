@@ -20,10 +20,9 @@ type LocalUserService struct {
 }
 
 type LocalUserServiceCreateAccountInfo struct {
-	Email     string
-	Password  string
-	FirstName string
-	LastName  string
+	Email       string
+	Password    string
+	DisplayName string
 }
 
 type LocalUserServiceCreateAccountResult struct {
@@ -70,8 +69,8 @@ func (service *LocalUserService) CreateAccount(info LocalUserServiceCreateAccoun
 		)
 
 		hashPassword, _ := hashPassword(info.Password)
+		profile, _ = service.ProfileRepo.Create(&models.Profile{DisplayName: info.DisplayName}, repositories.CreateOptions{Tx: tx})
 		user, _ = service.localUserRepo.Create(&models.LocalUser{Email: info.Email, Password: hashPassword}, repositories.CreateOptions{Tx: tx})
-		profile, _ = service.ProfileRepo.Create(&models.Profile{FirstName: info.FirstName, LastName: info.LastName}, repositories.CreateOptions{Tx: tx})
 		linked, _ = service.userProfileLinkRepo.Create(&models.UserProfileLink{UserID: user.ID, ProfileID: profile.ID, Type: models.LocalUserType})
 
 		service.logger.Debugf("new account created: %+v %+v %+v", user, profile, linked)

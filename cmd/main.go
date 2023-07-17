@@ -101,6 +101,7 @@ func main() {
 
 		// controllers
 		controllers.NewMe,
+		controllers.NewSession,
 		controllers.NewLocalUser,
 
 		// authentication

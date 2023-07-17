@@ -12,10 +12,9 @@ type LocalUserController struct {
 }
 
 type createAccountBodyDTO struct {
-	Email     string `json:"email" validate:"required,email"`
-	Password  string `json:"password" validate:"required,password"`
-	FirstName string `json:"firstName" validate:"required,alpha,max=100"`
-	LastName  string `json:"lastName" validate:"required,alpha,max=100"`
+	Email       string `json:"email" validate:"required,email"`
+	Password    string `json:"password" validate:"required,password"`
+	DisplayName string `json:"displayName" validate:"required,max=25"`
 }
 
 func (controller *LocalUserController) CreateAccount(c *fiber.Ctx, validator *validator.Validator) error {
@@ -32,10 +31,9 @@ func (controller *LocalUserController) CreateAccount(c *fiber.Ctx, validator *va
 	}
 
 	result, err := controller.localUserService.CreateAccount(services.LocalUserServiceCreateAccountInfo{
-		Email:     body.Email,
-		Password:  body.Password,
-		FirstName: body.FirstName,
-		LastName:  body.LastName,
+		Email:       body.Email,
+		Password:    body.Password,
+		DisplayName: body.DisplayName,
 	})
 
 	if err != nil {
