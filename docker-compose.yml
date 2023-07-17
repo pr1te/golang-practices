@@ -5,8 +5,8 @@ services:
     image: postgres:15.3-alpine
     restart: always
     environment:
-      - POSTGRES_DB=announcify
-      - POSTGRES_USER=announcify
+      - POSTGRES_DB=left-it
+      - POSTGRES_USER=left-it
       - POSTGRES_PASSWORD=P@ssw0rd
     ports:
       - 5432:5432
