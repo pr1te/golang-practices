@@ -1,4 +1,4 @@
-module github.com/pr1te/announcify-api
+module github.com/pr1te/left-it-api
 
 go 1.20
 

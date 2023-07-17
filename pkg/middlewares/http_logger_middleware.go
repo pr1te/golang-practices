@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/pr1te/announcify-api/pkg/logger"
+	"github.com/pr1te/left-it-api/pkg/logger"
 	"github.com/valyala/bytebufferpool"
 )
 

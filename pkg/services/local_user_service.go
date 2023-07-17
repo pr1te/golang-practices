@@ -1,10 +1,10 @@
 package services
 
 import (
-	"github.com/pr1te/announcify-api/pkg/errors"
-	"github.com/pr1te/announcify-api/pkg/logger"
-	"github.com/pr1te/announcify-api/pkg/models"
-	"github.com/pr1te/announcify-api/pkg/repositories"
+	"github.com/pr1te/left-it-api/pkg/errors"
+	"github.com/pr1te/left-it-api/pkg/logger"
+	"github.com/pr1te/left-it-api/pkg/models"
+	"github.com/pr1te/left-it-api/pkg/repositories"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )

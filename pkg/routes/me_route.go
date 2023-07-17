@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/pr1te/announcify-api/pkg/authenticator"
-	"github.com/pr1te/announcify-api/pkg/controllers"
+	"github.com/pr1te/left-it-api/pkg/authenticator"
+	"github.com/pr1te/left-it-api/pkg/controllers"
 	"go.uber.org/dig"
 )
 

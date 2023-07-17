@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/pr1te/announcify-api/pkg/database"
+	"github.com/pr1te/left-it-api/pkg/database"
 	"gorm.io/gorm"
 )
 

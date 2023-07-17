@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 
-	"github.com/pr1te/announcify-api/pkg/models"
+	"github.com/pr1te/left-it-api/pkg/models"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

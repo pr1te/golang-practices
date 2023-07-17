@@ -1,5 +1,5 @@
 GOPATH ?= $(HOME)/go
-APP_NAME ?= announcify-api
+APP_NAME ?= left-it-api
 VERSION ?= 0.0.1
 
 .PHONY: run

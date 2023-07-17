@@ -5,9 +5,9 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
-	"github.com/pr1te/announcify-api/pkg/errors"
-	"github.com/pr1te/announcify-api/pkg/libs/validator"
-	"github.com/pr1te/announcify-api/pkg/services"
+	"github.com/pr1te/left-it-api/pkg/errors"
+	"github.com/pr1te/left-it-api/pkg/libs/validator"
+	"github.com/pr1te/left-it-api/pkg/services"
 )
 
 type credential struct {

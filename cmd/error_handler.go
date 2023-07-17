@@ -5,8 +5,8 @@ import (
 
 	goerrors "github.com/go-errors/errors"
 	"github.com/gofiber/fiber/v2"
-	"github.com/pr1te/announcify-api/pkg/errors"
-	"github.com/pr1te/announcify-api/pkg/logger"
+	"github.com/pr1te/left-it-api/pkg/errors"
+	"github.com/pr1te/left-it-api/pkg/logger"
 )
 
 type CustomError struct {

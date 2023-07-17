@@ -3,8 +3,8 @@ package repositories
 import (
 	"errors"
 
-	"github.com/pr1te/announcify-api/pkg/database"
-	"github.com/pr1te/announcify-api/pkg/models"
+	"github.com/pr1te/left-it-api/pkg/database"
+	"github.com/pr1te/left-it-api/pkg/models"
 	"gorm.io/gorm"
 )
 

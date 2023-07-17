@@ -8,23 +8,23 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
-	"github.com/pr1te/announcify-api/pkg/authenticator"
-	"github.com/pr1te/announcify-api/pkg/config"
-	"github.com/pr1te/announcify-api/pkg/controllers"
-	"github.com/pr1te/announcify-api/pkg/database"
-	"github.com/pr1te/announcify-api/pkg/errors"
-	"github.com/pr1te/announcify-api/pkg/libs/validator"
-	"github.com/pr1te/announcify-api/pkg/logger"
-	"github.com/pr1te/announcify-api/pkg/middlewares"
-	"github.com/pr1te/announcify-api/pkg/repositories"
-	"github.com/pr1te/announcify-api/pkg/routes"
-	"github.com/pr1te/announcify-api/pkg/services"
+	"github.com/pr1te/left-it-api/pkg/authenticator"
+	"github.com/pr1te/left-it-api/pkg/config"
+	"github.com/pr1te/left-it-api/pkg/controllers"
+	"github.com/pr1te/left-it-api/pkg/database"
+	"github.com/pr1te/left-it-api/pkg/errors"
+	"github.com/pr1te/left-it-api/pkg/libs/validator"
+	"github.com/pr1te/left-it-api/pkg/logger"
+	"github.com/pr1te/left-it-api/pkg/middlewares"
+	"github.com/pr1te/left-it-api/pkg/repositories"
+	"github.com/pr1te/left-it-api/pkg/routes"
+	"github.com/pr1te/left-it-api/pkg/services"
 	"go.uber.org/dig"
 	"go.uber.org/zap"
 )
 
 var Version = "unset"
-var AppName = "Announcify API"
+var AppName = "Left it API"
 
 func main() {
 	// create ioc

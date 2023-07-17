@@ -6,7 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/storage/postgres/v2"
-	"github.com/pr1te/announcify-api/pkg/config"
+	"github.com/pr1te/left-it-api/pkg/config"
 )
 
 func NewSession(conf *config.Configuration) *session.Store {

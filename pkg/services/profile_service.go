@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/pr1te/announcify-api/pkg/models"
-	"github.com/pr1te/announcify-api/pkg/repositories"
+	"github.com/pr1te/left-it-api/pkg/models"
+	"github.com/pr1te/left-it-api/pkg/repositories"
 )
 
 type ProfileService struct {
