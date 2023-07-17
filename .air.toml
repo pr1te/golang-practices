@@ -4,7 +4,7 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = []
-  bin = "./bin/announcify-api"
+  bin = "./bin/left-it-api"
   cmd = "make build"
   delay = 0
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
@@ -24,7 +24,7 @@ tmp_dir = "tmp"
   stop_on_error = true
 
 [color]
-  app = "announcify"
+  app = "left-it"
   build = "yellow"
   main = "magenta"
   runner = "green"
