@@ -30,3 +30,6 @@ go.work
 
 # logs
 /logs/
+
+# mac file
+.DS_Store

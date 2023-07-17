@@ -16,6 +16,10 @@ type GetOptions struct {
 	Fields interface{}
 }
 
+type CreateOptions struct {
+	Tx *gorm.DB
+}
+
 func (repo *HelperRepository) RunInTransaction(fn TxFunc) error {
 	tx := repo.db.Client.Begin()
 

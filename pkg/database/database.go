@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 
+	"github.com/pr1te/announcify-api/pkg/models"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -41,6 +42,13 @@ func (db *Database) Connect() error {
 	}
 
 	db.Client = client
+
+	// auto migrate for creating table
+	db.Client.AutoMigrate(
+		&models.Profile{},
+		&models.LocalUser{},
+		&models.UserProfileLink{},
+	)
 
 	return nil
 }

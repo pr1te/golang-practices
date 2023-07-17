@@ -4,11 +4,11 @@ import (
 	goerrors "github.com/go-errors/errors"
 )
 
-func NewNotFound(message string, errors ...[]interface{}) *goerrors.Error {
+func NewNotFound(message string, details ...[]interface{}) *goerrors.Error {
 	var err []interface{}
 
-	if len(errors) > 0 {
-		err = errors[0]
+	if len(details) > 0 {
+		err = details[0]
 	}
 
 	excep := New(message, NOT_FOUND, err)

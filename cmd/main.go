@@ -7,6 +7,8 @@ import (
 	"os/signal"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/session"
+	"github.com/pr1te/announcify-api/pkg/authenticator"
 	"github.com/pr1te/announcify-api/pkg/config"
 	"github.com/pr1te/announcify-api/pkg/controllers"
 	"github.com/pr1te/announcify-api/pkg/database"
@@ -89,17 +91,25 @@ func main() {
 	providers := []interface{}{
 		// repositories
 		repositories.NewHelper,
-		repositories.NewWorkspace,
+		repositories.NewProfile,
 		repositories.NewLocalUser,
-		repositories.NewUserProfile,
+		repositories.NewUserProfileLink,
 
 		// services
-		services.NewLocalAuth,
-		services.NewWorkspace,
+		services.NewProfile,
+		services.NewLocalUser,
 
 		// controllers
-		controllers.NewLocalAuth,
-		controllers.NewWorkspace,
+		controllers.NewMe,
+		controllers.NewLocalUser,
+
+		// authentication
+		authenticator.New,
+		authenticator.NewLocalStrategy,
+		authenticator.NewSessionStrategy,
+
+		// session
+		func() *session.Store { return NewSession(conf) },
 	}
 
 	for _, provider := range providers {

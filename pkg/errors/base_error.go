@@ -7,14 +7,14 @@ import (
 type Exception struct {
 	Code    int           `json:"code" default:"500000"`
 	Message string        `json:"message"`
-	Errors  []interface{} `json:"errors" default:"[]"`
+	Details []interface{} `json:"details" default:"[]"`
 }
 
 func (err *Exception) Error() string {
 	return err.Message
 }
 
-func New(message string, code int, errs []interface{}) *goerrors.Error {
+func New(message string, code int, details []interface{}) *goerrors.Error {
 	msg := Messages[code]
 
 	if len(message) > 0 {
@@ -23,14 +23,14 @@ func New(message string, code int, errs []interface{}) *goerrors.Error {
 
 	err := []any{}
 
-	if len(errs) > 0 {
-		err = errs
+	if len(details) > 0 {
+		err = details
 	}
 
 	excep := &Exception{
 		Code:    code,
 		Message: msg,
-		Errors:  err,
+		Details: err,
 	}
 
 	return goerrors.New(excep)

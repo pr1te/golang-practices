@@ -48,14 +48,30 @@ func (repo *LocalUserRepository) GetByEmail(email string, options ...GetOptions)
 	return user, nil
 }
 
-func (repo *LocalUserRepository) Create(u models.LocalUser) models.LocalUser {
-	repo.db.Client.Create(&u)
+func (repo *LocalUserRepository) Create(user *models.LocalUser, options ...CreateOptions) (*models.LocalUser, error) {
+	opts := CreateOptions{}
 
-	return u
+	if len(options) > 0 {
+		if options[0].Tx != nil {
+			opts.Tx = options[0].Tx
+		}
+	}
+
+	var result *gorm.DB
+
+	if opts.Tx != nil {
+		result = opts.Tx.Create(&user)
+	} else {
+		result = repo.db.Client.Create(&user)
+	}
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return user, nil
 }
 
 func NewLocalUser(db *database.Database) *LocalUserRepository {
-	db.Client.AutoMigrate(&models.LocalUser{})
-
 	return &LocalUserRepository{db}
 }

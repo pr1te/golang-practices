@@ -14,7 +14,7 @@ type CustomError struct {
 	Status  int           `json:"status"`
 	Code    int           `json:"code"`
 	Message string        `json:"message"`
-	Errors  []interface{} `json:"errors" default:"[]"`
+	Details []interface{} `json:"details" default:"[]"`
 }
 
 func errorHandler(logger *logger.Logger) fiber.ErrorHandler {
@@ -30,7 +30,7 @@ func errorHandler(logger *logger.Logger) fiber.ErrorHandler {
 			ctx.Status(status).JSON(&CustomError{
 				Code:    exception.Code,
 				Message: exception.Message,
-				Errors:  exception.Errors,
+				Details: exception.Details,
 				Status:  status,
 				Type:    errors.ERROR_TYPE[status],
 			})
@@ -38,18 +38,32 @@ func errorHandler(logger *logger.Logger) fiber.ErrorHandler {
 			statusCategory := strconv.Itoa(e.Err.(*errors.Exception).Code)[0:1]
 
 			if statusCategory == "4" {
-				logger.Debugf("%s, code: %d\n%+v", exception.Message, exception.Code, exception.Errors)
+				logger.Debugf("%s, code: %d, errors: %+v", exception.Message, exception.Code, exception.Details)
 			} else {
-				logger.Errorln(e.ErrorStack())
+				logger.Errorln(err.Error(), e.ErrorStack())
 			}
 
 			return nil
 		}
 
-		err = ctx.Status(status).JSON(err)
+		if err != nil {
+			logger.Errorln(err.Error())
+		}
+
+		err = ctx.Status(status).JSON(&CustomError{
+			Code:    errors.INTERNAL_SERVER_ERROR,
+			Message: err.Error(),
+			Details: []any{},
+			Status:  status,
+			Type:    errors.ERROR_TYPE[status],
+		})
 
 		if err != nil {
 			internalErr := errors.NewInternalServerError("oops! something went wrong")
+
+			if err != nil {
+				logger.Errorln(err.Error(), internalErr.ErrorStack())
+			}
 
 			return ctx.Status(status).JSON(internalErr.Err)
 		}
