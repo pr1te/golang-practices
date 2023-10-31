@@ -1,13 +1,11 @@
-# announcify-api
-
 ## Available Scripts
 ```bash
-# run announcify app
+# run app
 $ make run
 
-# run announcify app with hot reload for file changes
+# run app with hot reload for file changes
 $ make watch
 
-# bundle announcify app
+# bundle app
 $ make build
 ```
