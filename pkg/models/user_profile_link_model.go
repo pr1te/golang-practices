@@ -9,8 +9,8 @@ import (
 type UserType string
 
 const (
-	LocalUserType  UserType = "local"
-	GoogleUserType UserType = "google"
+	LOCAL_USER_TYPE  UserType = "local"
+	GOOGLE_USER_TYPE UserType = "google"
 )
 
 type UserProfileLink struct {
@@ -23,7 +23,7 @@ type UserProfileLink struct {
 // Value validate enum when set to database
 func (t UserType) Value() (driver.Value, error) {
 	switch t {
-	case LocalUserType, GoogleUserType:
+	case LOCAL_USER_TYPE, GOOGLE_USER_TYPE:
 		return string(t), nil
 	}
 
@@ -47,7 +47,7 @@ func (t *UserType) Scan(value interface{}) error {
 	at := UserType(str)
 
 	switch at {
-	case LocalUserType, GoogleUserType:
+	case LOCAL_USER_TYPE, GOOGLE_USER_TYPE:
 		*t = at
 
 		return nil

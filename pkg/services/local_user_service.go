@@ -71,7 +71,7 @@ func (service *LocalUserService) CreateAccount(info LocalUserServiceCreateAccoun
 		hashPassword, _ := hashPassword(info.Password)
 		profile, _ = service.ProfileRepo.Create(&models.Profile{DisplayName: info.DisplayName}, repositories.CreateOptions{Tx: tx})
 		user, _ = service.localUserRepo.Create(&models.LocalUser{Email: info.Email, Password: hashPassword}, repositories.CreateOptions{Tx: tx})
-		linked, _ = service.userProfileLinkRepo.Create(&models.UserProfileLink{UserID: user.ID, ProfileID: profile.ID, Type: models.LocalUserType})
+		linked, _ = service.userProfileLinkRepo.Create(&models.UserProfileLink{UserID: user.ID, ProfileID: profile.ID, Type: models.LOCAL_USER_TYPE})
 
 		service.logger.Debugf("new account created: %+v %+v %+v", user, profile, linked)
 
@@ -100,7 +100,7 @@ func (service *LocalUserService) Login(email string, password string) (*models.L
 	}
 
 	if verifiedPasswordResult := comparePassword(user.Password, password); verifiedPasswordResult {
-		linked, getLinkErr := service.userProfileLinkRepo.GetByUserIDAndType(user.ID, models.LocalUserType)
+		linked, getLinkErr := service.userProfileLinkRepo.GetByUserIDAndType(user.ID, models.LOCAL_USER_TYPE)
 
 		if getLinkErr != nil {
 			return nil, nil, getLinkErr
